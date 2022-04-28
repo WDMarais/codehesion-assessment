@@ -2,28 +2,40 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Grid, TextField } from '@mui/material';
+import axios from 'axios';
+import { default as secrets } from '../secrets.json';
+
+const minPasswordLength = secrets.min_password_length;
 
 const validationSchema = yup.object({
-  email: yup
-    .string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
+  login: yup
+    .string('Enter your login details')
+    .email('Enter a valid login identifier (currently only email supported)')
+    .required('Login details are required'),
   password: yup
     .string('Enter your password')
-    .min(8, 'Password should be of minimum 8 characters length')
+    .min(minPasswordLength, `Password should be of minimum ${minPasswordLength} characters length`)
     .required('Password is required'),
 });
 
 const LoginForm = () => {
   const formik = useFormik({
     initialValues: {
-      email: '',
+      login: '',
       password: ''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+        let url = `${secrets.api_details.url}/${secrets.api_details.token_call}`;
+        let payload = {...values,
+            client_id: secrets.api_details.client_id,
+            client_secret: secrets.api_details.client_secret,
+            grant_type: 'password',
+        };
+        axios.post(url, payload).then(res => {
+          console.log(res);
+        }).catch(error => console.log(error.response));
+    }
   });
 
   return (
@@ -32,14 +44,14 @@ const LoginForm = () => {
           <Grid container direction={"column"} spacing={2} margin={2}>
             <Grid item>
             <TextField
-              id="email"
-              name="email"
-              label="Email"
+              id="login"
+              name="login"
+              label="Login (email)"
               placeholder="email@provider.ext"
-              value={formik.values.email}
+              value={formik.values.login}
               onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              error={formik.touched.login && Boolean(formik.errors.login)}
+              helperText={formik.touched.login && formik.errors.login}
             />
             </Grid>
             <Grid item>
