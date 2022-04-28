@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
+import {
+  Button, IconButton, Checkbox, FormControlLabel,
+  Grid, TextField, Snackbar
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import axios from 'axios';
 import { default as secrets } from '../secrets.json';
 
@@ -32,6 +37,29 @@ const validationSchema = yup.object({
 });
 
 const SignupForm = () => {
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarVisible(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleSnackbarClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -47,6 +75,7 @@ const SignupForm = () => {
       let payload = { "profile": values };
       axios.post(url, payload).then(res => {
         console.log(res);
+        setSnackbarVisible(true);
       }).catch(error => console.log(error.response));
     },
   });
@@ -131,6 +160,13 @@ const SignupForm = () => {
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
+          <Snackbar
+            open={snackbarVisible}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            message="Successfully Registered"
+            action={action}
+          />
       </form>
   );
 };
