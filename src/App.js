@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,17 +13,36 @@ import SignupForm from './components/signupForm';
 import LoginForm from './components/loginForm';
 
 function App() {
-  return (
+  const [accessToken, setAccessToken] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const setLoginData = (loginData) => {
+    console.log("Hello");
+    console.log(loginData);
+    let token = loginData.token;
+    if (token && token != '') {
+      setAccessToken(accessToken);
+      setLoggedIn(true);
+    } else {
+      setAccessToken('');
+      setLoggedIn(false);
+    }
+  }
+
+  return ( //TODO: Block off Menus path when not logged in - login issues, so I'm leaving it in for demo purposes
     <div className="App">
       <header className="App-header">
-        <Header />
+        <Header props={{loggedIn: loggedIn}}/>
       </header>
       <Router>
         <Routes>
-          <Route exact path="/signup" element={<SignupForm />}/>
-          <Route exact path="/login" element={<LoginForm />}/>
+          {!loggedIn && <Route exact path="/signup" element={<SignupForm />}/>}
+          {!loggedIn && <Route exact path="/login" element={
+            <LoginForm setParentState={setLoginData}/>
+          }/>}
           <Route exact path="/menus" element={<Menus />}/>
-          <Route path="/" element={<Entry />}/>
+          {!loggedIn && <Route path="/" element={<Entry />}/>}
+          {loggedIn && <Route path="/" element={<Menus />}/>}
         </Routes>
       </Router>
     </div>

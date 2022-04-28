@@ -18,7 +18,7 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-const LoginForm = () => {
+const LoginForm = (setParentState) => {
   const formik = useFormik({
     initialValues: {
       login: '',
@@ -33,7 +33,7 @@ const LoginForm = () => {
             grant_type: 'password',
         };
         axios.post(url, payload).then(res => {
-          console.log(res);
+          setParentState(res.data);
         }).catch(error => console.log(error.response));
     }
   });
