@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 
 const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
@@ -36,37 +36,45 @@ const SignupForm = () => {
   return (
       <form className="signup-form" onSubmit={formik.handleSubmit}>
           <h4> Signup Form </h4>
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            placeholder="email@provider.ext"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            id="mobile"
-            name="mobile"
-            label="Mobile"
-            placeholder="+00123456789"
-            value={formik.values.mobile}
-            onChange={formik.handleChange}
-            error={formik.touched.mobile && Boolean(formik.errors.mobile)}
-            helperText={formik.touched.mobile && formik.errors.mobile}
-          />
-          <TextField
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            placeholder="A long password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
+          <Grid container direction={"column"} spacing={2} margin={2}>
+            <Grid item>
+            <TextField
+              id="email"
+              name="email"
+              label="Email"
+              placeholder="email@provider.ext"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+            </Grid>
+            <Grid item>
+              <TextField
+              id="mobile"
+              name="mobile"
+              label="Mobile"
+              placeholder="+00123456789"
+              value={formik.values.mobile}
+              onChange={formik.handleChange}
+              error={formik.touched.mobile && Boolean(formik.errors.mobile)}
+              helperText={formik.touched.mobile && formik.errors.mobile}
+            />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="A long password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+          </Grid>
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
