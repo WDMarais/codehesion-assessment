@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
 
 const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
@@ -22,6 +22,10 @@ const validationSchema = yup.object({
     .string('Enter your first name'),
   surname: yup
     .string('Enter your surname'),
+  accepted_tac: yup
+    .boolean('Accept the terms and conditions')
+    .required(`The T's and C's must be accepted to continue`)
+    .oneOf([true], `The T's and C's must be accepted to continue`),
 });
 
 const SignupForm = () => {
@@ -32,6 +36,7 @@ const SignupForm = () => {
       mobile: '',
       first_name: '',
       surname: '',
+      accepted_tac: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -102,6 +107,17 @@ const SignupForm = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.surname && Boolean(formik.errors.surname)}
                 helperText={formik.touched.surname && formik.errors.surname}
+              />
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={<Checkbox checked={formik.values.accepted_tac} />}
+                id="accepted_tac"
+                name="accepted_tac"
+                label="Accept Terms and Conditions"
+                onChange={formik.handleChange}
+                error={formik.touched.accepted_tac && Boolean(formik.errors.accepted_tac)}
+                helperText={formik.touched.accepted_tac && formik.errors.accepted_tac}
               />
             </Grid>
           </Grid>
