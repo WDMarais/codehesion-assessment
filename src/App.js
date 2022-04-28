@@ -2,6 +2,7 @@ import React from 'react';
 
 import './App.css';
 import Header from './components/header';
+import SignupForm from './components/signupForm';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <header className="App-header">
         <Header />
       </header>
+      <SignupForm />
     </div>
   );
 }
