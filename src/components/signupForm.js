@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
 
-const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+const phoneRegExp = /^[0-9]{10}$/;
 
 const validationSchema = yup.object({
   email: yup
@@ -12,7 +12,7 @@ const validationSchema = yup.object({
     .required('Email is required'),
   mobile: yup
     .string('Enter your mobile number')
-    .matches(phoneRegExp, 'Phone number is not valid (check area code)')
+    .matches(phoneRegExp, 'Phone number is not valid (requires exactly ten digits)')
     .required('Mobile is required'),
   password: yup
     .string('Enter your password')
