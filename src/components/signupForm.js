@@ -2,6 +2,8 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
+import axios from 'axios';
+import { default as secrets } from '../secrets.json';
 
 const phoneRegExp = /^[0-9]{10}$/;
 
@@ -40,7 +42,11 @@ const SignupForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      let url = `${secrets.api_details.url}/${secrets.api_details.profile_api_call}`;
+      let payload = { "profile": values };
+      axios.post(url, payload).then(res => {
+        console.log(res);
+      }).catch(error => console.log(error.response));
     },
   });
 
