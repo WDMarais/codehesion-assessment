@@ -18,6 +18,10 @@ const validationSchema = yup.object({
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
     .required('Password is required'),
+  first_name: yup
+    .string('Enter your first name'),
+  surname: yup
+    .string('Enter your surname'),
 });
 
 const SignupForm = () => {
@@ -26,6 +30,8 @@ const SignupForm = () => {
       email: '',
       password: '',
       mobile: '',
+      first_name: '',
+      surname: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -72,6 +78,30 @@ const SignupForm = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="first_name"
+                name="first_name"
+                label="First Name"
+                placeholder="Hugh"
+                value={formik.values.first_name}
+                onChange={formik.handleChange}
+                error={formik.touched.first_name && Boolean(formik.errors.first_name)}
+                helperText={formik.touched.first_name && formik.errors.first_name}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="surname"
+                name="surname"
+                label="Surname"
+                placeholder="Mann"
+                value={formik.values.surname}
+                onChange={formik.handleChange}
+                error={formik.touched.surname && Boolean(formik.errors.surname)}
+                helperText={formik.touched.surname && formik.errors.surname}
               />
             </Grid>
           </Grid>
