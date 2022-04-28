@@ -3,11 +3,17 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, TextField } from '@mui/material';
 
+const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+
 const validationSchema = yup.object({
   email: yup
     .string('Enter your email')
     .email('Enter a valid email')
     .required('Email is required'),
+  mobile: yup
+    .string('Enter your mobile number')
+    .matches(phoneRegExp, 'Phone number is not valid (check area code)')
+    .required('Mobile is required'),
   password: yup
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
@@ -17,8 +23,9 @@ const validationSchema = yup.object({
 const SignupForm = () => {
   const formik = useFormik({
     initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
+      email: '',
+      password: '',
+      mobile: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -33,16 +40,28 @@ const SignupForm = () => {
             id="email"
             name="email"
             label="Email"
+            placeholder="email@provider.ext"
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
+            id="mobile"
+            name="mobile"
+            label="Mobile"
+            placeholder="+00123456789"
+            value={formik.values.mobile}
+            onChange={formik.handleChange}
+            error={formik.touched.mobile && Boolean(formik.errors.mobile)}
+            helperText={formik.touched.mobile && formik.errors.mobile}
+          />
+          <TextField
             id="password"
             name="password"
             label="Password"
             type="password"
+            placeholder="A long password"
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
